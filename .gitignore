@@ -13,3 +13,5 @@
 *.out
 
 /vendor
+/todos
+/config.yaml
