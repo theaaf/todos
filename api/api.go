@@ -93,10 +93,8 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 }
 
 func (a *API) RootHandler(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	if _, err := w.Write([]byte(`{"hello" : "world"}`)); err != nil {
-		return err
-	}
-	return nil
+	_, err := w.Write([]byte(`{"hello" : "world"}`))
+	return err
 }
 
 func (a *API) IPAddressForRequest(r *http.Request) string {
