@@ -9,5 +9,5 @@ type Todo struct {
 	Done bool
 
 	User   User
-	UserID int
+	UserID uint
 }
