@@ -58,6 +58,7 @@ var serveCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		defer a.Close()
 
 		api, err := api.New(a)
 		if err != nil {
