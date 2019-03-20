@@ -1,25 +1,37 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
+	"time"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/sys/unix"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "todos",
 	Short: "Todo Web Application",
-	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Usage()
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		if !terminal.IsTerminal(unix.Stdout) {
+			logrus.SetFormatter(&logrus.JSONFormatter{})
+		} else {
+			logrus.SetFormatter(&logrus.TextFormatter{
+				FullTimestamp:   true,
+				TimestampFormat: time.RFC3339Nano,
+			})
+		}
+
+		if verbose, _ := cmd.Flags().GetBool("verbose"); verbose {
+			logrus.SetLevel(logrus.DebugLevel)
+		}
 	},
 }
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		logrus.Fatal(err)
 	}
 }
 
@@ -27,6 +39,7 @@ var configFile string
 
 func init() {
 	cobra.OnInitialize(initConfig)
+	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "make output more verbose")
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is config.yaml)")
 }
 
@@ -43,7 +56,6 @@ func initConfig() {
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Printf("unable to read config: %v\n", err)
-		os.Exit(1)
+		logrus.WithError(err).Warnf("unable to read config from file")
 	}
 }

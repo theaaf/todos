@@ -16,7 +16,7 @@ func InitConfig() (*Config, error) {
 		SecretKey: []byte(viper.GetString("SecretKey")),
 	}
 	if len(config.SecretKey) == 0 {
-		return nil, fmt.Errorf("SecretKey must be set!")
+		return nil, fmt.Errorf("SecretKey must be set")
 	}
 	return config, nil
 }

@@ -61,12 +61,43 @@
   version = "v1.0"
 
 [[projects]]
+  digest = "1:7e63b12cdd7bef2c411d736cb67e28134d39f5d236aa1bfb8f3d55e3ad709eca"
+  name = "github.com/jinzhu/gorm"
+  packages = [
+    ".",
+    "dialects/postgres",
+  ]
+  pruneopts = "UT"
+  revision = "472c70caa40267cb89fd8facb07fe6454b578626"
+  version = "v1.9.2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:fd97437fbb6b7dce04132cf06775bd258cce305c44add58eb55ca86c6c325160"
+  name = "github.com/jinzhu/inflection"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "04140366298a54a039076d798123ffa108fff46c"
+
+[[projects]]
   digest = "1:31e761d97c76151dde79e9d28964a812c46efc5baee4085b86f68f0c654450de"
   name = "github.com/konsorten/go-windows-terminal-sequences"
   packages = ["."]
   pruneopts = "UT"
   revision = "f55edac94c9bbba5d6182a4be46d86a2c9b5b50e"
   version = "v1.0.2"
+
+[[projects]]
+  digest = "1:b18ffc558326ebaed3b4a175617f1e12ed4e3f53d6ebfe5ba372a3de16d22278"
+  name = "github.com/lib/pq"
+  packages = [
+    ".",
+    "hstore",
+    "oid",
+  ]
+  pruneopts = "UT"
+  revision = "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:c568d7727aa262c32bdf8a3f7db83614f7af0ed661474b24588de635c20024c7"
@@ -91,6 +122,14 @@
   pruneopts = "UT"
   revision = "c01d1270ff3e442a8a57cddc1c92dc1138598194"
   version = "v1.2.0"
+
+[[projects]]
+  digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
+  version = "v0.8.1"
 
 [[projects]]
   digest = "1:87c2e02fb01c27060ccc5ba7c5a407cc91147726f8f40b70cceeedbc52b1f3a8"
@@ -200,9 +239,14 @@
     "github.com/NYTimes/gziphandler",
     "github.com/gorilla/handlers",
     "github.com/gorilla/mux",
+    "github.com/jinzhu/gorm",
+    "github.com/jinzhu/gorm/dialects/postgres",
+    "github.com/pkg/errors",
     "github.com/sirupsen/logrus",
     "github.com/spf13/cobra",
     "github.com/spf13/viper",
+    "golang.org/x/crypto/ssh/terminal",
+    "golang.org/x/sys/unix",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
