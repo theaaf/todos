@@ -43,7 +43,15 @@ func New(a *app.App) (api *API, err error) {
 
 func (a *API) Init(r *mux.Router) {
 	// user methods
-	r.Handle("/users", a.handler(a.CreateUser)).Methods("POST")
+	r.Handle("/users/", a.handler(a.CreateUser)).Methods("POST")
+
+	// todo methods
+	todosRouter := r.PathPrefix("/todos").Subrouter()
+	todosRouter.Handle("/", a.handler(a.GetTodos)).Methods("GET")
+	todosRouter.Handle("/", a.handler(a.CreateTodo)).Methods("POST")
+	todosRouter.Handle("/{id:[0-9]+}/", a.handler(a.GetTodoById)).Methods("GET")
+	todosRouter.Handle("/{id:[0-9]+}/", a.handler(a.UpdateTodoById)).Methods("PATCH")
+	todosRouter.Handle("/{id:[0-9]+}/", a.handler(a.DeleteTodoById)).Methods("DELETE")
 }
 
 func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) error) http.Handler {
@@ -114,6 +122,26 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 				}
 
 				w.WriteHeader(http.StatusBadRequest)
+				_, err = w.Write(data)
+
+				if err != nil {
+					ctx.Logger.Error(err)
+					http.Error(w, "internal server error", http.StatusInternalServerError)
+					return
+				}
+
+				return
+			}
+
+			if uerr, ok := err.(*app.UserError); ok {
+				data, err := json.Marshal(uerr)
+				if err != nil {
+					ctx.Logger.Error(err)
+					http.Error(w, "internal server error", http.StatusInternalServerError)
+					return
+				}
+
+				w.WriteHeader(uerr.StatusCode)
 				_, err = w.Write(data)
 
 				if err != nil {

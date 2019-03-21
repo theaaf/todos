@@ -1,13 +1,11 @@
 package model
 
-import "github.com/jinzhu/gorm"
-
 type Todo struct {
-	gorm.Model
+	Model
 
-	Name string
-	Done bool
+	Name string `json:"name"`
+	Done bool   `json:"done"`
 
-	User   User
-	UserID uint
+	User   User `json:"-"`
+	UserID uint `json:"-"`
 }

@@ -19,12 +19,16 @@ func (ctx *Context) GetTodoById(id uint) (*model.Todo, error) {
 	return todo, nil
 }
 
-func (ctx *Context) GetTodosByUserId(userId uint) ([]*model.Todo, error) {
+func (ctx *Context) getTodosByUserId(userId uint) ([]*model.Todo, error) {
+	return ctx.Database.GetTodosByUserId(userId)
+}
+
+func (ctx *Context) GetUserTodos() ([]*model.Todo, error) {
 	if ctx.User == nil {
 		return nil, ctx.AuthorizationError()
 	}
 
-	return ctx.Database.GetTodosByUserId(userId)
+	return ctx.getTodosByUserId(ctx.User.ID)
 }
 
 func (ctx *Context) CreateTodo(todo *model.Todo) error {

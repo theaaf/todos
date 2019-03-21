@@ -1,7 +1,6 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -15,7 +14,7 @@ func ComparePasswordHash(hashedPassword, givenPassword []byte) bool {
 }
 
 type User struct {
-	gorm.Model
+	Model
 
 	Email          string
 	HashedPassword []byte
