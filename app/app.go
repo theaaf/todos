@@ -49,3 +49,12 @@ type ValidationError struct {
 func (e *ValidationError) Error() string {
 	return e.Message
 }
+
+type UserError struct {
+	Message    string `json:"message"`
+	StatusCode int    `json:"-"`
+}
+
+func (e *UserError) Error() string {
+	return e.Message
+}

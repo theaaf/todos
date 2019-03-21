@@ -1,6 +1,8 @@
 package app
 
 import (
+	"net/http"
+
 	"github.com/sirupsen/logrus"
 
 	"github.com/theaaf/todos/db"
@@ -30,4 +32,8 @@ func (ctx *Context) WithUser(user *model.User) *Context {
 	ret := *ctx
 	ret.User = user
 	return &ret
+}
+
+func (ctx *Context) AuthorizationError() *UserError {
+	return &UserError{Message: "unauthorized", StatusCode: http.StatusForbidden}
 }
