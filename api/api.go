@@ -115,47 +115,30 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		if err := f(ctx, w, r); err != nil {
 			if verr, ok := err.(*app.ValidationError); ok {
 				data, err := json.Marshal(verr)
-				if err != nil {
-					ctx.Logger.Error(err)
-					http.Error(w, "internal server error", http.StatusInternalServerError)
-					return
+				if err == nil {
+					w.WriteHeader(http.StatusBadRequest)
+					_, err = w.Write(data)
 				}
-
-				w.WriteHeader(http.StatusBadRequest)
-				_, err = w.Write(data)
 
 				if err != nil {
 					ctx.Logger.Error(err)
 					http.Error(w, "internal server error", http.StatusInternalServerError)
-					return
 				}
-
-				return
-			}
-
-			if uerr, ok := err.(*app.UserError); ok {
+			} else if uerr, ok := err.(*app.UserError); ok {
 				data, err := json.Marshal(uerr)
-				if err != nil {
-					ctx.Logger.Error(err)
-					http.Error(w, "internal server error", http.StatusInternalServerError)
-					return
+				if err == nil {
+					w.WriteHeader(uerr.StatusCode)
+					_, err = w.Write(data)
 				}
-
-				w.WriteHeader(uerr.StatusCode)
-				_, err = w.Write(data)
 
 				if err != nil {
 					ctx.Logger.Error(err)
 					http.Error(w, "internal server error", http.StatusInternalServerError)
-					return
 				}
-
-				return
+			} else {
+				ctx.Logger.Error(err)
+				http.Error(w, "internal server error", http.StatusInternalServerError)
 			}
-
-			ctx.Logger.Error(err)
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-			return
 		}
 	})
 }
